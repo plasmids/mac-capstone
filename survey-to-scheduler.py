@@ -44,7 +44,7 @@ def buildFacultyResponses():
 def findPresentationsOfStudent(name, presentations):
     presentationIDs = []
     for idNum, presentation in enumerate(presentations):
-        #Name is first element in presentation list, students may be a double major, so they can have multiple presentations
+        # Name is first element in presentation list, students may be a double major, so they can have multiple presentations
         if name in presentation[0]:
             presentationIDs.append(idNum)
     return presentationIDs
@@ -82,10 +82,12 @@ def conflictForFaculty(students, faculty, presentations):
         advisees = getAdvisees(advisor, students)
         noConflictPresentations = []
         for advisee in advisees:
+            # Conflict advisee presentations
             noConflictPresentations.extend(findPresentationsOfStudent(advisee, presentations))
-        # conflict based on faculty interests
+        # Conflict based on faculty interests
         facultyInterests = findFacultyInterestIDs(faculty[advisor], presentations)
         noConflictPresentations.extend(facultyInterests)
+        # Add conflicts to the presentations
         if len(noConflictPresentations) > 1:
             noConflictPresentations.sort()
             firstPresentation = presentations[noConflictPresentations.pop(0)]
@@ -119,9 +121,11 @@ def normalizeNoConflictColumns(presentations):
 
 def write(presentations):
     nonNoConflictHeaders = ['ID', 'Name'] + allTimes
+    # Calculate how may 'no conflict' column headers are needed to match the presentations width
     numNoConflictColumns = len(presentations[0]) - len(nonNoConflictHeaders) + 1
     schedulerWriter.writerow(nonNoConflictHeaders + ['no conflict'] * numNoConflictColumns)
     for presentationID, presentation in enumerate(presentations):
+        # Remove commas in names because our csv is delimited by commas
         presentation[0] = presentation[0].replace(",", "")
         schedulerWriter.writerow([presentationID] + presentation)
 
@@ -181,6 +185,7 @@ def generateCSV():
                         thisPresentionAvailablity = secondHalf
             else:
                 thisPresentionAvailablity = availablity
+
             for time in allTimes:
                 if time in thisPresentionAvailablity:
                     presentation.append(1)
