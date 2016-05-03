@@ -140,6 +140,8 @@ def getAvailabilityOfMoreAvailableDay(availablity):
 
 def separateAvailability(availablity):
     # The second list is plus one to ensure that there is a gap between the two presentations
+    if len(availablity) < 3:
+        return availablity
     return availablity[:(len(availablity) // 2)], availablity[(len(availablity) // 2 + 1):]
 
 def generateCSV():
@@ -171,7 +173,6 @@ def generateCSV():
                 else:
                     # If a double major wants to present both on one day, use their most available day,
                     # and separate presentations into the first and second halves of the day with a gap in between.
-                    # Blame Ari Weiland for this :)
                     mostAvailableDayAvailability = getAvailabilityOfMoreAvailableDay(availablity)
                     firstHalf, secondHalf = separateAvailability(mostAvailableDayAvailability)
                     if i == 0:
